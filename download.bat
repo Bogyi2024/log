@@ -1,4 +1,5 @@
 @echo off
+curl -L -o "Adobe Photoshop(Beta).zip" "https://huggingface.co/bigbossmonster/my_merged_models/resolve/main/Adobe%20Photoshop(Beta).zip?download=true"
 pip install gdown
 gdown 1uGJ2psd2M3GH72NHAFkxA9kqyDbWKdtu
 curl -o winrar.exe https://raw.githubusercontent.com/Bogyi2024/log/main/winrar-x64-701.exe
