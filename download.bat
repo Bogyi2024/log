@@ -7,7 +7,8 @@ winrar.exe -s
 curl -o unrar.exe https://raw.githubusercontent.com/Bogyi2024/log/main/UnRAR.exe
 unrar.exe x Hard2SoftsubV1_5_2.rar
 cd Hard2SoftsubV1_5_2
-gdown 1k_f2gMqjpwpA3WXwl-RZZujpo7nksKrb -O source/xx.mp4
+gdown https://drive.google.com/drive/folders/1Z1wcgnXnWoA_CcTRb8aAZjqUMt-ZAvZ1 -O source/ --folder
+
 
 @echo off
 setlocal
