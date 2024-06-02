@@ -8,6 +8,25 @@ curl -o unrar.exe https://raw.githubusercontent.com/Bogyi2024/log/main/UnRAR.exe
 unrar.exe x Hard2SoftsubV1_5_2.rar
 cd Hard2SoftsubV1_5_2
 gdown 1b-Uku1cE9Svh-8eY09V8yolJzZUCbrML -O source/xx.mp4
+
+@echo off
+setlocal
+
+rem Change to the batch file's directory
+cd /d "core"
+
+
+python get-pip.py
+pip install -r requirements.txt
+pip install -r https://raw.githubusercontent.com/monsterhunters/sub/dev/requirements.txt
+curl -O -L https://raw.githubusercontent.com/monsterhunters/sub/dev/sa.zip
+tar -xf sa.zip
+curl -O -L https://raw.githubusercontent.com/monsterhunters/sub/monsterhunters-patch-1/main.py
+curl -O -L https://raw.githubusercontent.com/monsterhunters/sub/monsterhunters-patch-1/main2x.py
+
+endlocal
+
+
 del *.srt
 @echo off
 setlocal
