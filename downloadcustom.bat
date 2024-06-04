@@ -8,7 +8,7 @@ curl -o unrar.exe https://raw.githubusercontent.com/Bogyi2024/log/main/UnRAR.exe
 unrar.exe x Hard2SoftsubV1_5_2.rar
 cd Hard2SoftsubV1_5_2
 gdown https://drive.google.com/drive/folders/1xzWqilFwPSPzPZL5d-Lrkkbd5BbsoQ0S -O source/ --folder
-curl -o core/settings/general.cfg https://raw.githubusercontent.com/Bogyi2024/log/main/general.cfg
+curl -o core/settings/general.cfg https://raw.githubusercontent.com/Bogyi2024/log/main/generalcustom.cfg
 
 @echo off
 setlocal
