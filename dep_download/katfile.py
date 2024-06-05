@@ -1,8 +1,9 @@
 import requests
 import re
+import os
 
-url = "https://pastebin.com/raw/wfBkJJpS" # @param {type:"string"}
-output_path = "download/"
+url = "https://pastebin.com/raw/wfBkJJpS"  # URL containing links to download
+output_path = "download/"  # Output path for downloaded files
 
 response = requests.get(url)
 
@@ -12,7 +13,6 @@ if response.status_code == 200:
 
     for link in links:
         if link.startswith('http'):
-            output_path = "" # @param {type:"string"}
             apiKey = "699996yph6h88a7rc6c1g8"
             parts = link.split('/')
             domain = parts[2]
@@ -27,16 +27,25 @@ if response.status_code == 200:
 
                 parts_final = download_url.split('/')
                 filecodex = parts_final[3]
-                final_url= f"https://{domain}/api/file/direct_link?key={apiKey}&file_code={filecodex}"
+                final_url = f"https://{domain}/api/file/direct_link?key={apiKey}&file_code={filecodex}"
                 response = requests.get(final_url)
 
                 if response.status_code == 200:
                     json_data = response.json()
                     download_url = json_data.get('result', {}).get('url')
-                    wget -P $output_path $download_url
+
+                    # Create the output directory if it doesn't exist
+                    if not os.path.exists(output_path):
+                        os.makedirs(output_path)
+
+                    # Extract filename from URL and download the file to the output path
+                    filename = download_url.split('/')[-1]
+                    filepath = os.path.join(output_path, filename)
+                    with open(filepath, 'wb') as f:
+                        f.write(requests.get(download_url).content)
                 else:
-                    print("Error while fetching Katfile API")
+                    print("Error while fetching Katfile direct link API")
             else:
-                print("Error while fetching Katfile API")
+                print("Error while fetching Katfile clone API")
 else:
     print("Error while fetching URL:", response.status_code)
