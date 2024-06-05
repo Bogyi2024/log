@@ -32,7 +32,7 @@ if response.status_code == 200:
                 if response.status_code == 200:
                     json_data = response.json()
                     download_url = json_data.get('result', {}).get('url')
-                    !wget -P $output_path $download_url
+                    wget -P $output_path $download_url
                 else:
                     print("Error while fetching Katfile API")
             else:
