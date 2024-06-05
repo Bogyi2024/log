@@ -1,7 +1,7 @@
 import requests
 import re
 
-url = "" # @param {type:"string"}
+url = "https://pastebin.com/raw/wfBkJJpS" # @param {type:"string"}
 
 response = requests.get(url)
 
