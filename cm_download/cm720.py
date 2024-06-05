@@ -1,6 +1,6 @@
 import os
 import requests
-import subprocess
+import urllib.request
 
 # Function to fetch links from Pastebin
 def fetch_links_from_pastebin(pastebin_link):
@@ -20,15 +20,12 @@ if single_line_batch_links:
 
     for url in single_line_batch_links:
         if url:
-            response = requests.get(url)  # Send a request to the URL
-            if response.status_code == 200:
-                download_url = response.url
-                # Construct the command for curl
-                local_filename = os.path.join(output_path, download_url.split('/')[-1])
-                command = ['curl', '-o', local_filename, download_url]
-                subprocess.run(command, check=True)
-                print(f"Downloaded: {local_filename}")
-            else:
-                print(f"Error fetching URL: {url}")
+            filename = url.split('/')[-1]
+            filepath = os.path.join(output_path, filename)
+            try:
+                urllib.request.urlretrieve(url, filepath)
+                print(f"Downloaded: {filename}")
+            except Exception as e:
+                print(f"Error downloading {filename}: {str(e)}")
         else:
             print("Empty URL encountered")
