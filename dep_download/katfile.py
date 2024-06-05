@@ -38,12 +38,11 @@ for url in files:
             parts_final = download_url.split('/')
             filecodex = parts_final[3]
             final_url = f"https://{domain}/api/file/direct_link?key={apiKey}&file_code={filecodex}"
-            response = requests.get(final_url)
+            response = requests.get(final_url, stream=True)
             if response.status_code == 200:
-                json_data = response.json()
-                download_url = json_data.get('result', {}).get('url')
-                subprocess.run(["wget", "-P", output_path, download_url], check=True)  # Using subprocess to execute wget
-            else:
-                print("Error while fetching Katfile API")
+                filename = os.path.join(output_path, download_url.split('/')[-1])
+                with open(filename, 'wb') as f:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        f.write(chunk)
         else:
             print("Error while fetching Katfile API")
