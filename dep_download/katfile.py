@@ -1,56 +1,41 @@
-# @title <img src="https://assets.katfile.com/images/logo.png" width="100px">
+import requests
+import re
 
-import os, re, requests
+url = "" # @param {type:"string"}
 
-single_line_batch_links = "" # @param {type:"string"}
+response = requests.get(url)
 
-perlink = single_line_batch_links.split(" ")
+if response.status_code == 200:
+    content = response.text
+    links = re.findall(r'href=[\'"]?([^\'" >]+)', content)
 
-if single_line_batch_links != "" :
+    for link in links:
+        if link.startswith('http'):
+            output_path = "" # @param {type:"string"}
+            apiKey = "699996yph6h88a7rc6c1g8"
+            parts = link.split('/')
+            domain = parts[2]
+            filecode = parts[3]
 
-    files = perlink
+            cloneurl = f"https://{domain}/api/file/clone?key={apiKey}&file_code={filecode}"
+            response = requests.get(cloneurl)
 
-#else:
+            if response.status_code == 200:
+                json_data = response.json()
+                download_url = json_data.get('result', {}).get('url')
 
-#    file_url1 = "" # @param {type:"string"}
-#    file_url2 = "" # @param {type:"string"}
-#    file_url3 = "" # @param {type:"string"}
-#    file_url4 = "" # @param {type:"string"}
-#    file_url5 = "" # @param {type:"string"}
-#
-#
-#    files = [file_url1, file_url2, file_url3, file_url4, file_url5]
+                parts_final = download_url.split('/')
+                filecodex = parts_final[3]
+                final_url= f"https://{domain}/api/file/direct_link?key={apiKey}&file_code={filecodex}"
+                response = requests.get(final_url)
 
-
-for url in files:
-  if url == "":
-    continue
-  else:
-    output_path = "" # @param {type:"string"}
-    apiKey = "699996yph6h88a7rc6c1g8"
-    parts = url.split('/')
-    domain = parts[2]
-    filecode = parts[3]
-  #  print(parts)
-  #  print(domain)
-  #  print(filecode)
-    #https://katfile.com/api/file/clone?key=699996yph6h88a7rc6c1g8&file_code=zrzac82zifv0
-    cloneurl = f"https://{domain}/api/file/clone?key={apiKey}&file_code={filecode}"
-    response = requests.get(cloneurl)
-    if response.status_code == 200:
-        json_data = response.json()
-        download_url = json_data.get('result', {}).get('url')
-    #    print(download_url)
-        parts_final = download_url.split('/')
-        filecodex = parts_final[3]
-        final_url= f"https://{domain}/api/file/direct_link?key={apiKey}&file_code={filecodex}"
-        response = requests.get(final_url)
-        if response.status_code == 200:
-            json_data = response.json()
-            download_url = json_data.get('result', {}).get('url')
-         #   print(download_url)
-            !wget -P $output_path $download_url
-        else:
-            print("Error while fetching Katfile API")
-    else:
-      print("Error while fetching Katfile API")
+                if response.status_code == 200:
+                    json_data = response.json()
+                    download_url = json_data.get('result', {}).get('url')
+                    !wget -P $output_path $download_url
+                else:
+                    print("Error while fetching Katfile API")
+            else:
+                print("Error while fetching Katfile API")
+else:
+    print("Error while fetching URL:", response.status_code)
