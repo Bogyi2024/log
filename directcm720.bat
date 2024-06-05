@@ -1,13 +1,12 @@
 @echo off
 rem Installing
-pip install gdown
-gdown 1q421vbzHgXv7cG7quC6YVQi4iW1ASvOY
 curl -o winrar.exe https://raw.githubusercontent.com/Bogyi2024/log/main/winrar-x64-701.exe
 winrar.exe -s
 curl -o unrar.exe https://raw.githubusercontent.com/Bogyi2024/log/main/UnRAR.exe
 unrar.exe x Hard2SoftsubV1_5_2.rar
 cd Hard2SoftsubV1_5_2
-gdown https://drive.google.com/drive/folders/1xzWqilFwPSPzPZL5d-Lrkkbd5BbsoQ0S -O source/ --folder
+curl -o https://raw.githubusercontent.com/Bogyi2024/log/main/cm_download/cm720.py
+python cm720.py
 curl -o core/settings/general.cfg https://raw.githubusercontent.com/Bogyi2024/log/main/generalcm720.cfg
 
 @echo off
