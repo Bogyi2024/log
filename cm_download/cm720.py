@@ -15,7 +15,7 @@ pastebin_link = "https://pastebin.com/raw/0gUFE5Q0"
 single_line_batch_links = fetch_links_from_pastebin(pastebin_link)
 
 if single_line_batch_links:
-    output_path = "download/"
+    output_path = "source/"
     os.makedirs(output_path, exist_ok=True)
 
     for url in single_line_batch_links:
