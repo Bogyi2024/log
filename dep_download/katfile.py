@@ -1,6 +1,7 @@
 import requests
 import re
 import os
+import subprocess
 
 url = "https://pastebin.com/raw/wfBkJJpS"  # URL containing links to download
 output_path = "download/"  # Output path for downloaded files
@@ -41,8 +42,8 @@ if response.status_code == 200:
                     # Extract filename from URL and download the file to the output path
                     filename = download_url.split('/')[-1]
                     filepath = os.path.join(output_path, filename)
-                    with open(filepath, 'wb') as f:
-                        f.write(requests.get(download_url).content)
+
+                    subprocess.run(["wget", "-P", output_path, download_url], check=True)
                 else:
                     print("Error while fetching Katfile direct link API")
             else:
