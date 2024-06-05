@@ -2,6 +2,7 @@ import requests
 import re
 
 url = "https://pastebin.com/raw/wfBkJJpS" # @param {type:"string"}
+output_path = "download/"
 
 response = requests.get(url)
 
