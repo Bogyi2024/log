@@ -3,7 +3,7 @@ import re
 import os
 import subprocess
 
-url = "https://pastebin.com/raw/wfBkJJpS"  # URL containing links to download
+url = "https://katfile.com/wa7vuxtwbe9u/415169_3xplanet_Uncen-leaked_YSN-365.part1.rar.html"  # URL containing links to download
 output_path = "download/"  # Output path for downloaded files
 
 response = requests.get(url)
