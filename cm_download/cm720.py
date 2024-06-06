@@ -1,14 +1,12 @@
 import os
 import requests
-import urllib.request
 
-# Function to fetch links from Pastebin
 def fetch_links_from_pastebin(pastebin_link):
     response = requests.get(pastebin_link)
     if response.status_code == 200:
-        return response.text.strip().split('\n')
+        return response.text.splitlines()
     else:
-        print("Error fetching links from Pastebin")
+        print(f"Error fetching from Pastebin: {response.status_code}")
         return []
 
 pastebin_link = "https://pastebin.com/raw/0gUFE5Q0"
@@ -23,7 +21,7 @@ if single_line_batch_links:
             filename = url.split('/')[-1]
             filepath = os.path.join(output_path, filename)
             try:
-                urllib.request.urlretrieve(url, filepath)
+                os.system(f"aria2c.exe -d {output_path} {url}")
                 print(f"Downloaded: {filename}")
             except Exception as e:
                 print(f"Error downloading {filename}: {str(e)}")
