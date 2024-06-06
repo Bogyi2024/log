@@ -21,7 +21,7 @@ if single_line_batch_links:
             filename = url.split('/')[-1]
             filepath = os.path.join(output_path, filename)
             try:
-                os.system(f"aria2c.exe -d {output_path} {url}")
+                os.system(f"aria2c.exe -x 16 -d {output_path} {url}")
                 print(f"Downloaded: {filename}")
             except Exception as e:
                 print(f"Error downloading {filename}: {str(e)}")
