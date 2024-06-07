@@ -9,7 +9,7 @@ def fetch_links_from_pastebin(pastebin_link):
         print(f"Error fetching from Pastebin: {response.status_code}")
         return []
 
-pastebin_link = "https://pastebin.com/raw/uWkTKbJP"
+pastebin_link = "https://pastebin.com/p2Xk0N0b"
 single_line_batch_links = fetch_links_from_pastebin(pastebin_link)
 
 if single_line_batch_links:
