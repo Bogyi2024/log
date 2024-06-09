@@ -1,4 +1,5 @@
 import requests
+import subprocess
 
 # User credentials
 login_email = 'totalleecher@gmail.com'
@@ -53,15 +54,15 @@ if login_response.status_code == 200 and login_data.get('response'):
             download_link = download_data['response']['download_url']
             print('Download URL:', download_link)
 
-            # Step 4: Download the file using the obtained URL
-            final_response = requests.get(download_link)
-            
-            if final_response.status_code == 200:
-                with open(file_info['name'], 'wb') as file:
-                    file.write(final_response.content)
-                print('Download successful')
-            else:
-                print('Failed to download file:', final_response.status_code)
+            # Step 4: Download the file using aria2c
+            filename = file_info['name']
+            output_path = '.'  # Change to your desired output directory
+
+            try:
+                subprocess.run(['aria2c', '-x', '16', '-d', output_path, '-o', filename, download_link], check=True)
+                print(f'Download successful: {filename}')
+            except subprocess.CalledProcessError as e:
+                print(f'Error during download: {e}')
         else:
             print('Failed to get download URL:', download_response.status_code, download_data)
     else:
