@@ -7,11 +7,14 @@ def fetch_links_from_pastebin(pastebin_link):
     response = requests.get(pastebin_link)
     if response.status_code == 200:
         urls = response.text.strip().split('\n')
-        file_ids = [re.search(r'/file/([a-z0-9]+)/', url).group(1) for url in urls if re.search(r'/file/([a-z0-9]+)/', url)]
+        file_ids = [re.search(r'/file/([a-zA-Z0-9]+)/', url).group(1) for url in urls if re.search(r'/file/([a-zA-Z0-9]+)/', url)]
         return file_ids
     else:
         print("Error fetching links from Pastebin")
         return []
+
+
+
 
 # User credentials
 login_email = 'sdserver200@gmail.com'
