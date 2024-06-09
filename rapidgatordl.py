@@ -2,7 +2,7 @@ import requests
 import subprocess
 
 # User credentials
-login_email = 'totalleecher@gmail.com'
+login_email = 'kyawkaung709@gmail.com'
 password = 'htz175039'
 two_factor_code = ''  # Leave empty if 2FA is not enabled
 
