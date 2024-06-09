@@ -56,7 +56,7 @@ if login_response.status_code == 200 and login_data.get('response'):
 
             # Step 4: Download the file using aria2c
             filename = file_info['name']
-            output_path = '.'  # Change to your desired output directory
+            output_path = 'download/'  # Change to your desired output directory
 
             try:
                 subprocess.run(['aria2c', '-x', '16', '-d', output_path, '-o', filename, download_link], check=True)
