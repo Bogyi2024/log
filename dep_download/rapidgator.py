@@ -11,7 +11,7 @@ def fetch_links_from_pastebin(pastebin_link):
         return []
 
 # User credentials
-login_email = 'kyawkaung709@gmail.com'
+login_email = 'sdserver200@gmail.com'
 password = 'kk123456'
 two_factor_code = ''  # Leave empty if 2FA is not enabled
 
