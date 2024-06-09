@@ -4,14 +4,24 @@ import re
 
 # Function to fetch links from Pastebin and extract file IDs
 def fetch_links_from_pastebin(pastebin_link):
-    response = requests.get(pastebin_link)
-    if response.status_code == 200:
-        urls = response.text.strip().split('\n')
-        file_ids = [re.search(r'/file/([a-zA-Z0-9]+)/', url).group(1) for url in urls if re.search(r'/file/([a-zA-Z0-9]+)/', url)]
-        return file_ids
-    else:
-        print("Error fetching links from Pastebin")
-        return []
+    try:
+        response = requests.get(pastebin_link)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+        if response.status_code == 200:
+            print("Response received successfully from Pastebin.")
+            urls = response.text.strip().split('\n')
+            print("URLs:", urls)
+            file_ids = []
+            for url in urls:
+                match = re.search(r'/file/([a-zA-Z0-9]+)', url)
+                if match:
+                    file_id = match.group(1)
+                    file_ids.append(file_id)
+            print("File IDs extracted:", file_ids)
+            return file_ids
+    except Exception as e:
+        print("Error fetching links from Pastebin:", e)
+    return []
 
 
 
@@ -43,6 +53,7 @@ if login_response.status_code == 200 and login_data.get('response'):
     # Fetch file IDs from Pastebin
     pastebin_link = "https://pastebin.com/raw/EBiRrTGp"
     file_ids = fetch_links_from_pastebin(pastebin_link)
+    print(file_ids)
 
     for file_id in file_ids:
         # Step 2: Get the file info
@@ -50,7 +61,7 @@ if login_response.status_code == 200 and login_data.get('response'):
             'file_id': file_id,
             'token': token
         }
-
+        print('file_id')
         info_response = requests.get(info_url, params=info_params)
         info_data = info_response.json()
 
