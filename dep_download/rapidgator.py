@@ -1,11 +1,14 @@
 import requests
 import subprocess
+import re
 
-# Function to fetch links from Pastebin
+# Function to fetch links from Pastebin and extract file IDs
 def fetch_links_from_pastebin(pastebin_link):
     response = requests.get(pastebin_link)
     if response.status_code == 200:
-        return response.text.strip().split('\n')
+        urls = response.text.strip().split('\n')
+        file_ids = [re.search(r'/file/([a-z0-9]+)/', url).group(1) for url in urls if re.search(r'/file/([a-z0-9]+)/', url)]
+        return file_ids
     else:
         print("Error fetching links from Pastebin")
         return []
@@ -57,7 +60,7 @@ if login_response.status_code == 200 and login_data.get('response'):
                 'file_id': file_id,
                 'token': token
             }
-            print('file_id')
+            
             download_response = requests.get(download_url, params=download_params)
             download_data = download_response.json()
 
