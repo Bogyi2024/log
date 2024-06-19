@@ -1,8 +1,14 @@
+# @title <img src="https://static.mediafire.com/images/backgrounds/header/mf_logo_full_color.svg" width="150px">
+# @markdown - support single or multiple links
+
 import os
 import requests
 import gdown
 import subprocess
 import re
+import mediafire_dl
+
+
 
 def fetch_links_from_pastebin(pastebin_link):
     response = requests.get(pastebin_link)
@@ -45,14 +51,29 @@ if single_line_batch_links:
                 print(f"Error downloading from Google Drive: {str(e)}")
         else:
             if url:
-                filename = url.split('/')[-1]
-                filepath = os.path.join(output_path, filename)
-                try:
-                    # Ensure aria2c is installed and in the system's PATH
-                    subprocess.run(['aria2c', '-x', '16', '-d', output_path, url], check=True)
-                    print(f"Downloaded: {filename}")
-                except Exception as e:
-                    print(f"Error downloading {filename}: {str(e)}")
+                if url.startswith("https://download") or "mediafire.com" in url:
+                    try:
+                        os.chdir(output_path)
+                        if url.startswith("https://download"):
+                            # Modify the URL to the Mediafire format
+                            url_parts = url.split("/")
+                            new_url = f"https://www.mediafire.com/file/{url_parts[-2]}/{url_parts[-1]}"
+                            mediafire_dl.download(new_url, quiet=False)
+                        else:
+                            mediafire_dl.download(url, quiet=False)
+                        os.chdir("./")
+                        print(f"Downloaded: {url}")
+                    except Exception as e:
+                        print(f"Error downloading from Mediafire: {str(e)}")
+                else:
+                    filename = url.split('/')[-1]
+                    filepath = os.path.join(output_path, filename)
+                    try:
+                        # Ensure aria2c is installed and in the system's PATH
+                        subprocess.run(['aria2c', '-x', '16', '-d', output_path, url], check=True)
+                        print(f"Downloaded: {filename}")
+                    except Exception as e:
+                        print(f"Error downloading {filename}: {str(e)}")
             else:
                 print("Empty URL encountered")
 else:
