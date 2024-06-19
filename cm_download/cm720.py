@@ -1,6 +1,3 @@
-# @title <img src="https://static.mediafire.com/images/backgrounds/header/mf_logo_full_color.svg" width="150px">
-# @markdown - support single or multiple links
-
 import os
 import requests
 import gdown
