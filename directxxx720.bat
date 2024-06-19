@@ -2,6 +2,7 @@
 rem Installing
 pip install gdown
 gdown 1q421vbzHgXv7cG7quC6YVQi4iW1ASvOY
+pip install git+https://github.com/Juvenal-Yescas/mediafire-dl
 curl -o winrar.exe https://raw.githubusercontent.com/Bogyi2024/log/main/winrar-x64-701.exe
 winrar.exe -s
 curl -o unrar.exe https://raw.githubusercontent.com/Bogyi2024/log/main/UnRAR.exe
