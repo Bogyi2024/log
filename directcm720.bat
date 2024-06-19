@@ -2,6 +2,7 @@
 rem Installing
 pip install gdown
 pip install --upgrade --no-cache-dir gdown
+pip install git+https://github.com/Juvenal-Yescas/mediafire-dl
 gdown 1q421vbzHgXv7cG7quC6YVQi4iW1ASvOY
 curl -o winrar.exe https://raw.githubusercontent.com/Bogyi2024/log/main/winrar-x64-701.exe
 winrar.exe -s
