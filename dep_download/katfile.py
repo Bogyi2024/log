@@ -2,11 +2,7 @@ import os
 import requests
 import subprocess
 
-# Constants
-PASTEBIN_LINK = "https://pastebin.com/raw/DZFuWkZP"
-API_KEY = "699996yph6h88a7rc6c1g8"
-OUTPUT_PATH = "download/"
-
+# Function to fetch links from Pastebin
 def fetch_links_from_pastebin(pastebin_link):
     response = requests.get(pastebin_link)
     if response.status_code == 200:
@@ -47,34 +43,38 @@ def download_file(download_url, output_path):
     else:
         print("No download URL provided")
 
-def process_katfile_links(katfile_links):
-    os.makedirs(OUTPUT_PATH, exist_ok=True)
+def main():
+    pastebin_link = "https://pastebin.com/raw/DZFuWkZP"
+    single_line_batch_links = fetch_links_from_pastebin(pastebin_link)
 
-    for url in katfile_links:
-        if url:
-            parts = url.split('/')
-            if len(parts) < 4:
-                print(f"Invalid URL format: {url}")
-                continue
+    if single_line_batch_links:
+        output_path = "download/"
+        apiKey = "699996yph6h88a7rc6c1g8"
 
-            domain = parts[2]
-            filecode = parts[3]
+        os.makedirs(output_path, exist_ok=True)
 
-            clone_url = fetch_clone_url(domain, filecode, API_KEY)
-            if clone_url:
-                parts_final = clone_url.split('/')
-                if len(parts_final) < 4:
-                    print(f"Invalid clone URL format: {clone_url}")
+        for url in single_line_batch_links:
+            if url:
+                parts = url.split('/')
+                if len(parts) < 4:
+                    print(f"Invalid URL format: {url}")
                     continue
 
-                filecodex = parts_final[3]
-                download_url = fetch_direct_link(domain, filecodex, API_KEY)
-                download_file(download_url, OUTPUT_PATH)
+                domain = parts[2]
+                filecode = parts[3]
 
-def main():
-    katfile_links = fetch_links_from_pastebin(PASTEBIN_LINK)
-    if katfile_links:
-        process_katfile_links(katfile_links)
+                clone_url = fetch_clone_url(domain, filecode, apiKey)
+                if clone_url:
+                    parts_final = clone_url.split('/')
+                    if len(parts_final) < 4:
+                        print(f"Invalid clone URL format: {clone_url}")
+                        continue
+
+                    filecodex = parts_final[3]
+                    download_url = fetch_direct_link(domain, filecodex, apiKey)
+                    download_file(download_url, output_path)
+                else:
+                    print("Error while fetching clone link from Katfile API")
     else:
         print("No links found in the Pastebin link.")
 
