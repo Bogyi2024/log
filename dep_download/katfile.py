@@ -8,75 +8,47 @@ def fetch_links_from_pastebin(pastebin_link):
     if response.status_code == 200:
         return response.text.strip().split('\n')
     else:
-        print(f"Error fetching links from Pastebin: {response.status_code}")
+        print("Error fetching links from Pastebin")
         return []
 
-def fetch_clone_url(domain, filecode, api_key):
-    clone_url = f"https://{domain}/api/file/clone?key={api_key}&file_code={filecode}"
-    response = requests.get(clone_url)
-    if response.status_code == 200:
-        json_data = response.json()
-        return json_data.get('result', {}).get('url')
-    else:
-        print(f"Error fetching clone link: {response.status_code}")
-        return None
+pastebin_link = "https://pastebin.com/raw/DZFuWkZP"
+single_line_batch_links = fetch_links_from_pastebin(pastebin_link)
 
-def fetch_direct_link(domain, filecodex, api_key):
-    final_url = f"https://{domain}/api/file/direct_link?key={api_key}&file_code={filecodex}"
-    response = requests.get(final_url)
-    if response.status_code == 200:
-        json_data = response.json()
-        return json_data.get('result', {}).get('url')
-    else:
-        print(f"Error fetching direct link: {response.status_code}")
-        return None
+if single_line_batch_links:
+    output_path = "download/"
+    apiKey = "699996yph6h88a7rc6c1g8"
 
-def download_file(download_url, output_path):
-    if download_url:
-        local_filename = os.path.join(output_path, download_url.split('/')[-1])
-        command = ['curl', '-o', local_filename, download_url]
-        try:
-            subprocess.run(command, check=True)
-            print(f"Downloaded: {local_filename}")
-        except subprocess.CalledProcessError as e:
-            print(f"Error downloading {local_filename}: {e}")
-    else:
-        print("No download URL provided")
+    os.makedirs(output_path, exist_ok=True)
 
-def main():
-    pastebin_link = "https://pastebin.com/raw/DZFuWkZP"
-    single_line_batch_links = fetch_links_from_pastebin(pastebin_link)
+    for url in single_line_batch_links:
+        if url:
+            parts = url.split('/')
+            domain = parts[2]
+            filecode = parts[3]
 
-    if single_line_batch_links:
-        output_path = "download/"
-        apiKey = "699996yph6h88a7rc6c1g8"
+            cloneurl = f"https://{domain}/api/file/clone?key={apiKey}&file_code={filecode}"
+            response = requests.get(cloneurl)
 
-        os.makedirs(output_path, exist_ok=True)
+            if response.status_code == 200:
+                json_data = response.json()
+                download_url = json_data.get('result', {}).get('url')
 
-        for url in single_line_batch_links:
-            if url:
-                parts = url.split('/')
-                if len(parts) < 4:
-                    print(f"Invalid URL format: {url}")
-                    continue
+                parts_final = download_url.split('/')
+                filecodex = parts_final[3]
+                final_url = f"https://{domain}/api/file/direct_link?key={apiKey}&file_code={filecodex}"
+                response = requests.get(final_url)
 
-                domain = parts[2]
-                filecode = parts[3]
+                if response.status_code == 200:
+                    json_data = response.json()
+                    download_url = json_data.get('result', {}).get('url')
 
-                clone_url = fetch_clone_url(domain, filecode, apiKey)
-                if clone_url:
-                    parts_final = clone_url.split('/')
-                    if len(parts_final) < 4:
-                        print(f"Invalid clone URL format: {clone_url}")
-                        continue
-
-                    filecodex = parts_final[3]
-                    download_url = fetch_direct_link(domain, filecodex, apiKey)
-                    download_file(download_url, output_path)
+                    if download_url:
+                        # Construct the command for curl
+                        local_filename = os.path.join(output_path, download_url.split('/')[-1])
+                        command = ['curl', '-o', local_filename, download_url]
+                        subprocess.run(command, check=True)
+                        print(f"Downloaded: {local_filename}")
                 else:
-                    print("Error while fetching clone link from Katfile API")
-    else:
-        print("No links found in the Pastebin link.")
-
-if __name__ == "__main__":
-    main()
+                    print("Error while fetching direct link from Katfile API")
+            else:
+                print("Error while fetching clone link from Katfile API")
