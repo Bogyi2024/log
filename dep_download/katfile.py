@@ -5,6 +5,8 @@ import subprocess
 import re
 import mediafire_dl
 
+!pip3 install git+https://github.com/Juvenal-Yescas/mediafire-dl
+
 def fetch_links_from_pastebin(pastebin_link):
     response = requests.get(pastebin_link)
     if response.status_code == 200:
@@ -61,8 +63,12 @@ def download_file_from_katfile(url, output_path, apiKey="699996yph6h88a7rc6c1g8"
         if response.status_code == 200:
             json_data = response.json()
             download_url = json_data.get('result', {}).get('url')
-            subprocess.run(['wget', '-P', output_path, download_url], check=True)
-            print(f"Downloaded: {download_url}")
+            try:
+                # Download the file using aria2c
+                subprocess.run(['aria2c', '-x', '16', '-d', output_path, download_url], check=True)
+                print(f"Downloaded: {download_url}")
+            except Exception as e:
+                print(f"Error downloading from Katfile: {str(e)}")
         else:
             print("Error while fetching Katfile API")
     else:
