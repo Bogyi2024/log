@@ -50,7 +50,7 @@ def main():
     single_line_batch_links = fetch_links_from_pastebin(pastebin_link)
 
     if single_line_batch_links:
-        output_path = "source/"
+        output_path = "download/"
         os.makedirs(output_path, exist_ok=True)
 
         for url in single_line_batch_links:
