@@ -5,7 +5,6 @@ import subprocess
 import re
 import mediafire_dl
 
-!pip3 install git+https://github.com/Juvenal-Yescas/mediafire-dl
 
 def fetch_links_from_pastebin(pastebin_link):
     response = requests.get(pastebin_link)
