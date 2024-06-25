@@ -46,7 +46,7 @@ def download_file_with_aria2c(url, output_path):
         print(f"Error downloading {filename}: {str(e)}")
 
 def main():
-    pastebin_link = "https://pastebin.com/raw/p2Xk0N0b"
+    pastebin_link = "https://pastebin.com/raw/DZFuWkZP"
     single_line_batch_links = fetch_links_from_pastebin(pastebin_link)
 
     if single_line_batch_links:
