@@ -45,6 +45,29 @@ def download_file_with_aria2c(url, output_path):
     except Exception as e:
         print(f"Error downloading {filename}: {str(e)}")
 
+def download_file_from_katfile(url, output_path, apiKey="699996yph6h88a7rc6c1g8"):
+    parts = url.split('/')
+    domain = parts[2]
+    filecode = parts[3]
+    cloneurl = f"https://{domain}/api/file/clone?key={apiKey}&file_code={filecode}"
+    response = requests.get(cloneurl)
+    if response.status_code == 200:
+        json_data = response.json()
+        download_url = json_data.get('result', {}).get('url')
+        parts_final = download_url.split('/')
+        filecodex = parts_final[3]
+        final_url = f"https://{domain}/api/file/direct_link?key={apiKey}&file_code={filecodex}"
+        response = requests.get(final_url)
+        if response.status_code == 200:
+            json_data = response.json()
+            download_url = json_data.get('result', {}).get('url')
+            subprocess.run(['wget', '-P', output_path, download_url], check=True)
+            print(f"Downloaded: {download_url}")
+        else:
+            print("Error while fetching Katfile API")
+    else:
+        print("Error while fetching Katfile API")
+
 def main():
     pastebin_link = "https://pastebin.com/raw/DZFuWkZP"
     single_line_batch_links = fetch_links_from_pastebin(pastebin_link)
@@ -69,6 +92,8 @@ def main():
                     download_file_from_mediafire(new_url, output_path)
                 else:
                     download_file_from_mediafire(url, output_path)
+            elif "katfile.com" in url:
+                download_file_from_katfile(url, output_path)
             else:
                 download_file_with_aria2c(url, output_path)
     else:
