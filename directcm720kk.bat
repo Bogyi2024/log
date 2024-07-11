@@ -9,6 +9,7 @@ winrar.exe -s
 curl -o unrar.exe https://raw.githubusercontent.com/Bogyi2024/log/main/UnRAR.exe
 unrar.exe x Hard2SoftsubV1_5_2.rar
 cd Hard2SoftsubV1_5_2
+curl -o unrar.exe https://raw.githubusercontent.com/Bogyi2024/log/main/send_email_kk.py
 curl -o aria2c.exe https://raw.githubusercontent.com/Bogyi2024/log/main/aria2c.exe
 curl -o cm720kk.py https://raw.githubusercontent.com/Bogyi2024/log/main/cm_download/cm720kk.py
 python cm720kk.py
