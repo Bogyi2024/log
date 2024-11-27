@@ -24,7 +24,7 @@ def extract_google_drive_id(url):
         print(f"Invalid Google Drive URL: {url}")
         return None
 
-pastebin_link = "https://pastebin.com/raw/JK9NMvpc"
+pastebin_link = "https://pastebin.com/raw/KrNJRSLM"
 
 single_line_batch_links = fetch_links_from_pastebin(pastebin_link)
 
