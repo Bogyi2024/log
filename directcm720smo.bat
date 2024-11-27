@@ -86,4 +86,4 @@ python sa.py && python unrarx.py && python getsizex.py && python cropx.py && pyt
 
 endlocal
 
-python send_email_kk.py
+python send_email_smo.py
