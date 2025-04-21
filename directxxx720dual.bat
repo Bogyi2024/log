@@ -13,6 +13,7 @@ curl -o aria2c.exe https://raw.githubusercontent.com/Bogyi2024/log/main/aria2c.e
 curl -o cm720.py https://raw.githubusercontent.com/Bogyi2024/log/main/cm_download/cm720.py
 python cm720.py
 curl -o core/settings/general.cfg https://raw.githubusercontent.com/Bogyi2024/log/main/generalxxx.cfg
+curl -o core/settings/general.cfg https://raw.githubusercontent.com/Bogyi2024/log/main/custom.cfg
 
 @echo off
 setlocal
@@ -65,6 +66,7 @@ set "output_file=commands.txt"
 (
     for %%A in ("%folder_path%\*.mp4" "%folder_path%\*.mkv" "%folder_path%\*.m4v") do (
         echo VideoSubFinderWXW.exe -c -r -nthr 1 -i "%%A"
+        echo VideoSubFinderWXW.exe -gs "settings\custom.cfg" -c -r -nthr 1 -i "%%A"
         echo rar a -ep1 "%%~nA.rar" "%output_folder%\*"
 
     )
