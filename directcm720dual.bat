@@ -13,6 +13,7 @@ curl -o aria2c.exe https://raw.githubusercontent.com/Bogyi2024/log/main/aria2c.e
 curl -o cm720.py https://raw.githubusercontent.com/Bogyi2024/log/main/cm_download/cm720.py
 python cm720.py
 curl -o core/settings/general.cfg https://raw.githubusercontent.com/Bogyi2024/log/main/generalcm720.cfg
+curl -o core/settings/custom.cfg https://raw.githubusercontent.com/Bogyi2024/log/main/upperlinecm.cfg
 
 @echo off
 setlocal
