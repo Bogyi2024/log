@@ -38,10 +38,11 @@ if single_line_batch_links:
             try:
                 # Construct Google Drive file URL
                 gdrive_url = f"https://drive.google.com/uc?id={file_id}"
-                os.chdir(output_path)
+                #os.chdir(output_path)
+                output_file = os.path.join(output_path, f"{file_id}.file")
                 # Download the file with gdown to the source folder
-                gdown.download(gdrive_url, output=None, quiet=False)
-                os.chdir("./")
+                gdown.download(gdrive_url, output=output_file, quiet=False)
+                #os.chdir("./")
                 
                 print(f"Downloaded: {gdrive_url}")
             except Exception as e:
