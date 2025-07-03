@@ -17,7 +17,7 @@ def resolve_short_url(url):
     try:
         response = requests.head(url, allow_redirects=True, timeout=10)
         final_url = response.url
-        print(f"[→] Resolved {url} → {final_url}")
+        print(f"Resolved {url} → {final_url}")
         return final_url
     except Exception as e:
         print(f"Failed to resolve short URL {url}: {e}")
