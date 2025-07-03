@@ -117,7 +117,7 @@ if __name__ == "__main__":
 
             if dl_response.status_code == 200 and dl_data.get('response'):
                 download_link = dl_data['response']['download_url']
-                print(f"[→] Downloading {filename}...")
+                print(f"Downloading {filename}...")
 
                 try:
                     subprocess.run([
