@@ -20,7 +20,7 @@ def resolve_short_url(url):
         print(f"[→] Resolved {url} → {final_url}")
         return final_url
     except Exception as e:
-        print(f"[✗] Failed to resolve short URL {url}: {e}")
+        print(f"Failed to resolve short URL {url}: {e}")
         return url
 
 # Extract file IDs from Pastebin URLs
@@ -36,7 +36,7 @@ def fetch_links_from_pastebin(pastebin_link):
             if match:
                 file_id = match.group(1)
                 file_ids.append(file_id)
-        print("[✓] File IDs extracted:", file_ids)
+        print("File IDs extracted:", file_ids)
         return file_ids
     except Exception as e:
         print("Error fetching links from Pastebin:", e)
@@ -55,13 +55,13 @@ def rapidgator_login(email, password, code=''):
         data = response.json()
         if response.status_code == 200 and data.get('response'):
             token = data['response']['token']
-            print('[✓] Login successful.')
+            print('Login successful.')
             return token
         else:
-            print('[✗] Login failed:', data.get('details', 'Unknown error'))
+            print('Login failed:', data.get('details', 'Unknown error'))
             return None
     except Exception as e:
-        print("[!] Login error:", e)
+        print("Login error:", e)
         return None
 
 # === MAIN ===
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     # Step 2: Extract file IDs from Pastebin
     file_ids = fetch_links_from_pastebin(pastebin_link)
     if not file_ids:
-        print("[✗] No valid file IDs found.")
+        print("No valid file IDs found.")
         exit()
 
     # URLs
@@ -95,13 +95,13 @@ if __name__ == "__main__":
             info_response = requests.get(info_url, params=info_params)
             info_data = info_response.json()
         except Exception as e:
-            print(f"[✗] Failed to get info for {file_id}: {e}")
+            print(f"Failed to get info for {file_id}: {e}")
             continue
 
         if info_response.status_code == 200 and info_data.get('response'):
             file_info = info_data['response']['file']
             filename = file_info['name']
-            print(f"[✓] File found: {filename}")
+            print(f"File found: {filename}")
 
             # Get download URL
             download_params = {
@@ -112,7 +112,7 @@ if __name__ == "__main__":
                 dl_response = requests.get(download_url, params=download_params)
                 dl_data = dl_response.json()
             except Exception as e:
-                print(f"[✗] Failed to get download URL: {e}")
+                print(f"Failed to get download URL: {e}")
                 continue
 
             if dl_response.status_code == 200 and dl_data.get('response'):
@@ -126,10 +126,10 @@ if __name__ == "__main__":
                         '-o', filename,
                         download_link
                     ], check=True)
-                    print(f"[✓] Downloaded: {filename}")
+                    print(f"Downloaded: {filename}")
                 except subprocess.CalledProcessError as e:
-                    print(f"[✗] aria2c failed for {filename}: {e}")
+                    print(f"aria2c failed for {filename}: {e}")
             else:
-                print(f"[✗] Failed to get download URL for {filename}")
+                print(f"Failed to get download URL for {filename}")
         else:
-            print(f"[✗] Could not fetch info for file ID: {file_id}")
+            print(f"Could not fetch info for file ID: {file_id}")
