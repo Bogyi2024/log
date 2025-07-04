@@ -7,7 +7,7 @@ import os
 login_email = 'sdserver200@gmail.com'
 password = 'kk123456'
 two_factor_code = ''  # Leave blank if 2FA not enabled
-pastebin_link = "https://pastebin.com/raw/EBiRrTGp?nocache=1"
+pastebin_link = "https://pastebin.com/raw/5vvXvRwT?nocache=1"
 output_path = 'download'
 
 # === UTILS ===
