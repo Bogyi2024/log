@@ -43,7 +43,26 @@ def fetch_links_from_pastebin(pastebin_link):
         return []
 
 # Login to Rapidgator
-token = "mufsvol931dus8ftda3g27forn"
+def rapidgator_login(email, password, code=''):
+    login_url = 'https://rapidgator.net/api/v2/user/login'
+    login_params = {
+        'login': email,
+        'password': password,
+        'code': code
+    }
+    try:
+        response = requests.get(login_url, params=login_params)
+        data = response.json()
+        if response.status_code == 200 and data.get('response'):
+            token = data['response']['token']
+            print('Login successful.')
+            return token
+        else:
+            print('Login failed:', data.get('details', 'Unknown error'))
+            return None
+    except Exception as e:
+        print("Login error:", e)
+        return None
 
 # === MAIN ===
 if __name__ == "__main__":
@@ -51,10 +70,10 @@ if __name__ == "__main__":
     os.makedirs(output_path, exist_ok=True)
 
     # Step 1: Login
-    token = rapidgator_login(login_email, password, two_factor_code)
-    if not token:
-        exit()
-
+#    token = rapidgator_login(login_email, password, two_factor_code)
+#    if not token:
+ #       exit()
+    token = "mufsvol931dus8ftda3g27forn"
     # Step 2: Extract file IDs from Pastebin
     file_ids = fetch_links_from_pastebin(pastebin_link)
     if not file_ids:
