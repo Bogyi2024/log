@@ -43,27 +43,7 @@ def fetch_links_from_pastebin(pastebin_link):
         return []
 
 # Login to Rapidgator
-def rapidgator_login(email, password, code=''):
-    login_url = 'https://rapidgator.net/api/v2/user/login'
-    login_params = {
-        'login': email,
-        'password': password,
-        'code': code
-    }
-    try:
-        response = requests.get(login_url, params=login_params)
-        data = response.json()
-        if response.status_code == 200 and data.get('response'):
-            token = data['response']['token']
-            token = "jnactp8n5b8olbd0lmakau7q7t"
-            print('Login successful.')
-            return token
-        else:
-            print('Login failed:', data.get('details', 'Unknown error'))
-            return None
-    except Exception as e:
-        print("Login error:", e)
-        return None
+token = "mufsvol931dus8ftda3g27forn"
 
 # === MAIN ===
 if __name__ == "__main__":
