@@ -55,7 +55,7 @@ def rapidgator_login(email, password, code=''):
         data = response.json()
    #     if response.status_code == 200 and data.get('response'):
    #         token = data['response']['token']
-            token = "vj9vt3gq1kalkg4dbcphcbpne1"
+            token = "he1f3frsfo4clc53bq3pa8u2f1"
             print('Login successful.')
             return token
         else:
