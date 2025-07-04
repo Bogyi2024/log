@@ -71,9 +71,9 @@ if __name__ == "__main__":
 
     # Step 1: Login
 #    token = rapidgator_login(login_email, password, two_factor_code)
-#    if not token:
- #       exit()
-    token = "mufsvol931dus8ftda3g27forn"
+    if not token:
+        exit()
+#    token = "mufsvol931dus8ftda3g27forn"
     # Step 2: Extract file IDs from Pastebin
     file_ids = fetch_links_from_pastebin(pastebin_link)
     if not file_ids:
