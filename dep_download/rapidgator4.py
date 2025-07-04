@@ -4,7 +4,7 @@ import re
 import os
 
 # === CONFIG ===
-login_email = 'sdserver200@gmail.com'
+login_email = 'lay.gyi.44.55@proton.me'
 password = 'kk123456'
 two_factor_code = ''  # Leave blank if 2FA not enabled
 pastebin_link = "https://pastebin.com/raw/bsTAJw2Y?nocache=1"
