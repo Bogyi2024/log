@@ -70,7 +70,7 @@ if __name__ == "__main__":
     os.makedirs(output_path, exist_ok=True)
 
     # Step 1: Login
-#    token = rapidgator_login(login_email, password, two_factor_code)
+    token = rapidgator_login(login_email, password, two_factor_code)
     if not token:
         exit()
 #    token = "mufsvol931dus8ftda3g27forn"
