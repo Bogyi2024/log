@@ -1,38 +1,53 @@
 import requests
 import time
 
-# Your Rapidgator API link
+# ========== CONFIG ==========
 token = "k1bfcv6qjuotf7nrohiia9gr6v"
-id = "51144a58b67b5829bd4e5fa1eaa30b73"
-api_url = f'https://rapidgator.net/api/v2/file/download?file_id={id}&token={token}'
+file_id = "51144a58b67b5829bd4e5fa1eaa30b73"
+api_url = f"https://rapidgator.net/api/v2/file/download?file_id={file_id}&token={token}"
 
-# Step 1: Send the request to the API
-response = requests.get(api_url)
+# Optional proxy support (uncomment and fill in if needed)
+# proxies = {
+#     "http": "http://user:pass@ip:port",
+#     "https": "http://user:pass@ip:port",
+# }
+proxies = None
 
-# Step 2: Check if response is OK and parse JSON
-if response.status_code == 200:
-    data = response.json()
-    
-    if data.get("status") == 200 and "download_url" in data:
-        download_url = data["download_url"]
-        delay = int(data.get("delay", 0))
+# Browser-like headers
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
+    "Accept": "*/*",
+    "Connection": "keep-alive"
+}
 
-        print(f"Waiting {delay} seconds before download...")
-        time.sleep(delay)
+# ========== FUNCTION ==========
+def get_download_url():
+    for attempt in range(5):
+        try:
+            print(f"Attempt {attempt + 1}: contacting Rapidgator...")
+            response = requests.get(api_url, headers=headers, timeout=30, proxies=proxies)
 
-        print(f"Direct Download URL: {download_url}")
+            if response.status_code != 200:
+                print(f"HTTP Error: {response.status_code}")
+                continue
 
-        # Optional: download the file
-        # Uncomment below to save it
-        '''
-        filename = download_url.split('/')[-1]
-        file_response = requests.get(download_url, stream=True)
-        with open(filename, 'wb') as f:
-            for chunk in file_response.iter_content(chunk_size=8192):
-                f.write(chunk)
-        print(f"File saved as: {filename}")
-        '''
-    else:
-        print(f"Failed: {data}")
-else:
-    print(f"HTTP Error: {response.status_code}")
+            data = response.json()
+            if data.get("status") == 200 and "download_url" in data:
+                download_url = data["download_url"]
+                delay = int(data.get("delay", 0))
+                print(f"Success! Waiting {delay} seconds before showing the URL...")
+                time.sleep(delay)
+                print(f"\n🎯 Download URL: {download_url}")
+                return download_url
+            else:
+                print(f"API response invalid: {data}")
+        except requests.exceptions.RequestException as e:
+            print(f"Error: {e}")
+        time.sleep(2 ** attempt)  # exponential backoff
+
+    print("❌ Failed to get the download URL after 5 attempts.")
+    return None
+
+# ========== RUN ==========
+if __name__ == "__main__":
+    get_download_url()
