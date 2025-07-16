@@ -46,7 +46,8 @@ def download_file_with_aria2c(url, output_path):
     except Exception as e:
         print(f"Error downloading {filename}: {str(e)}")
 
-def download_file_from_katfile(url, output_path, apiKey="699996yph6h88a7rc6c1g8"):
+#def download_file_from_katfile(url, output_path, apiKey="699996yph6h88a7rc6c1g8"):
+def download_file_from_katfile(url, output_path, apiKey="9368456hlxk1h9wdnydbob"):
     parts = url.split('/')
     domain = parts[2]
     filecode = parts[3]
