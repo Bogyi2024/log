@@ -19,7 +19,7 @@ echo "Running pikpakcli..."
 
 # Step 4: Download and run huggingface.py
 echo "Downloading huggingface.py..."
-curl -sSL -o huggingface.py https://github.com/Bogyi2024/log/raw/refs/heads/main/pikpak/huggingface.py
+curl -sSL -o huggingface.py https://github.com/Bogyi2024/log/raw/refs/heads/main/dep_download/huggingface.py
 
 echo "Running huggingface.py..."
 python huggingface.py
