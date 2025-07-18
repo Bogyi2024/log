@@ -15,7 +15,7 @@ curl -sSL -o pikpakcli https://github.com/Bogyi2024/log/raw/refs/heads/main/pikp
 
 chmod +x pikpakcli
 echo "Running pikpakcli..."
-./pikpakcli
+./pikpakcli download
 
 # Step 4: Download and run huggingface.py
 echo "Downloading huggingface.py..."
