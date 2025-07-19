@@ -16,7 +16,7 @@ if not repo_name:
     raise ValueError("Pastebin content is empty. Expected a repo name.")
 
 # Step 4: Hugging Face logic
-write_token = "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"
+write_token = "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"
 login(write_token, add_to_git_credential=True)
 api = HfApi()
 
