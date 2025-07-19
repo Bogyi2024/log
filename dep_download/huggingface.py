@@ -15,12 +15,14 @@ if not repo_name:
     raise ValueError("Pastebin content is empty. Expected a repo name.")
 
 # Step 2: Decode Hugging Face token (Base64)
-encoded_token = "aGZfamFZdFlGdFFkeUJlWGFBWUFORHlCVUtzQnBqWWNQT1NwYQ=="
+encoded_token = "aGZfenFpcWNqdU1uSmVhWVBVZWRZWGtjS0NmWVhxbXBMU2lmQw=="
 write_token = base64.b64decode(encoded_token).decode()
 
 # Step 3: Login
 login(write_token, add_to_git_credential=True)
 api = HfApi()
+#print(api.whoami())
+
 
 # Step 4: Create repo if it doesn't exist
 user = api.whoami(token=write_token)
