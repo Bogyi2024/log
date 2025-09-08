@@ -1,4 +1,3 @@
-
 import os
 import yagmail
 
@@ -10,22 +9,32 @@ def send_email(recipient_email):
     # Get the current working directory
     srt_directory = os.getcwd()
     
-    # List all .srt files in the directory
-    srt_files = [os.path.join(srt_directory, file) for file in os.listdir(srt_directory) if file.endswith('.srt')]
+    # Collect all .srt and .rar files
+    srt_files = [os.path.join(srt_directory, f) for f in os.listdir(srt_directory) if f.endswith('.srt')]
+    rar_files = [os.path.join(srt_directory, f) for f in os.listdir(srt_directory) if f.endswith('.rar')]
     
-    if not srt_files:
-        print("No .srt files found in the current directory.")
+    # Combine them into one list of attachments
+    attachments = srt_files + rar_files
+    
+    if not attachments:
+        print("No .srt or .rar files found in the current directory.")
         return
 
     contents = [
-        "Congratulation!",
+        "Congratulations!",
         "Your file is ready to download.",
         "Best Regards,",
         "BSSG Group"
     ]
     
-    yag.send(to=recipient_email, subject="BSSG's srt Generator", contents=contents, attachments=srt_files)
-    print(f"Email sent to {recipient_email} with {len(srt_files)} attachments.")
+    yag.send(
+        to=recipient_email,
+        subject="BSSG's SRT Generator",
+        contents=contents,
+        attachments=attachments
+    )
+    
+    print(f"Email sent to {recipient_email} with {len(attachments)} attachments.")
 
 if __name__ == "__main__":
     send_email(RECIPIENT_EMAIL)
