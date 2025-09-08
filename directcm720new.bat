@@ -9,6 +9,7 @@ winrar.exe -s
 curl -o unrar.exe https://raw.githubusercontent.com/Bogyi2024/log/main/UnRAR.exe
 unrar.exe x Hard2SoftsubV1_5_2.rar
 cd Hard2SoftsubV1_5_2
+curl -o send_email_kk.py https://raw.githubusercontent.com/Bogyi2024/log/main/send_email_file.py
 curl -o aria2c.exe https://raw.githubusercontent.com/Bogyi2024/log/main/aria2c.exe
 curl -o cm720.py https://raw.githubusercontent.com/Bogyi2024/log/main/cm_download/cm720.py
 python cm720.py
@@ -173,4 +174,4 @@ python sa.py && python unrarx.py && python getsizex.py && python cropx.py && pyt
 
 endlocal
 
-python send_email.py
+python send_email_file.py
