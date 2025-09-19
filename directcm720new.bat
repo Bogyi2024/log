@@ -67,7 +67,8 @@ set "output_file=commands.txt"
     for %%A in ("%folder_path%\*.mp4" "%folder_path%\*.mkv" "%folder_path%\*.m4v") do (
         echo VideoSubFinderWXW.exe -c -r -nthr 1 -i "%%A"
         echo rar a -ep1 "%%~nA.rar" "%output_folder%\*"
-        echo rar a -ep1 "..\%%~nA.rar" "%output_folderx%\*"
+        echo rar a -ep1 "..\%%~nA_ILA.rar" "%output_folder%\*"
+        echo rar a -ep1 "..\%%~nA_RGB.rar" "%output_folderx%\*"
     )
 ) > "%output_file%"
 
