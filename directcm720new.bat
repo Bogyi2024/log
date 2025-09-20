@@ -1,6 +1,7 @@
 @echo off
 rem Installing
 pip install gdown
+pip install huggingface_hub
 pip install --upgrade --no-cache-dir gdown
 pip install git+https://github.com/Juvenal-Yescas/mediafire-dl
 gdown 1q421vbzHgXv7cG7quC6YVQi4iW1ASvOY
