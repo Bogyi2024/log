@@ -1,6 +1,8 @@
 @echo off
 rem Installing
 pip install gdown
+pip install yagmail
+pip install chardet
 pip install huggingface_hub
 pip install --upgrade --no-cache-dir gdown
 pip install git+https://github.com/Juvenal-Yescas/mediafire-dl
