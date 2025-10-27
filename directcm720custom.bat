@@ -23,7 +23,6 @@ rem Change to the batch file's directory
 cd /d "core"
 
 
-python get-pip.py
 pip install -r requirements.txt
 curl -O -L https://raw.githubusercontent.com/monsterhunters/sub/dev/sa.zip
 tar -xf sa.zip
