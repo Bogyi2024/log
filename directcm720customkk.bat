@@ -14,7 +14,7 @@ curl -o send_email_file_kk.py https://raw.githubusercontent.com/Bogyi2024/log/ma
 curl -o aria2c.exe https://raw.githubusercontent.com/Bogyi2024/log/main/aria2c.exe
 curl -o cm720kk.py https://raw.githubusercontent.com/Bogyi2024/log/main/cm_download/cm720kk.py
 python cm720kk.py
-curl -o core/settings/general.cfg https://pastebin.com/raw/JcgF1pg0
+curl -o core/settings/general.cfg https://pastebin.com/raw/bpXjyUEe
 
 @echo off
 setlocal
