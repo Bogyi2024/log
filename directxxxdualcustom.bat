@@ -12,8 +12,8 @@ cd Hard2SoftsubV1_5_2
 curl -o aria2c.exe https://raw.githubusercontent.com/Bogyi2024/log/main/aria2c.exe
 curl -o cm720.py https://raw.githubusercontent.com/Bogyi2024/log/main/cm_download/cm720.py
 python cm720.py
-curl -o core/settings/general.cfg https://raw.githubusercontent.com/Bogyi2024/log/main/generalxxx.cfg
-curl -o core/settings/custom.cfg https://raw.githubusercontent.com/Bogyi2024/log/main/custom.cfg
+curl -o core/settings/general.cfg https://pastebin.com/raw/CSaCY97V
+curl -o core/settings/custom.cfg https://pastebin.com/raw/a1qX9Mn2
 
 @echo off
 setlocal
