@@ -68,7 +68,8 @@ set "output_file=commands.txt"
         echo VideoSubFinderWXW.exe -c -r -nthr 1 -i "%%A"
         echo VideoSubFinderWXW.exe -gs "settings\custom.cfg" -r -nthr 1 -i "%%A"
         echo rar a -ep1 "%%~nA.rar" "%output_folder%\*"
-
+        echo rar a -ep1 "..\%%~nA_ILA.rar" "%output_folder%\*"
+        echo rar a -ep1 "..\%%~nA_RGB.rar" "%output_folderx%\*"
     )
 ) > "%output_file%"
 
@@ -87,4 +88,4 @@ python sa.py && python unrarx.py && python getsizex.py && python cropx.py && pyt
 
 endlocal
 
-python send_email.py
+python send_email_file.py
