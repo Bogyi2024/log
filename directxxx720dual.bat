@@ -24,7 +24,6 @@ cd /d "core"
 
 python get-pip.py
 pip install -r requirements.txt
-pip install -r https://raw.githubusercontent.com/monsterhunters/sub/dev/requirements.txt
 curl -O -L https://raw.githubusercontent.com/monsterhunters/sub/dev/sa.zip
 tar -xf sa.zip
 curl -O -L https://raw.githubusercontent.com/monsterhunters/sub/monsterhunters-patch-1/main.py
