@@ -12,9 +12,15 @@ unrar.exe x Hard2SoftsubV1_5_2.rar
 cd Hard2SoftsubV1_5_2
 curl -o send_email_file.py https://raw.githubusercontent.com/Bogyi2024/log/main/send_email_file.py
 curl -o aria2c.exe https://raw.githubusercontent.com/Bogyi2024/log/main/aria2c.exe
+
+rem Download the new Python script
 curl -o cm720-next.py https://raw.githubusercontent.com/Bogyi2024/log/main/cm_download/cm720-next.py
+rem Run the Python script (it will use the LINKS_CONTENT variable)
 python cm720-next.py
-curl -o core/settings/general.cfg %SETTING%
+
+rem --- THIS IS THE MODIFIED LINE ---
+rem It now creates the file from the environment variable instead of downloading
+echo "%SETTING_CONTENT%" > core/settings/general.cfg
 
 @echo off
 setlocal
