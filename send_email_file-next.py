@@ -4,7 +4,7 @@ import yagmail
 from huggingface_hub import HfApi
 import urllib.parse
 
-RECIPIENT_EMAIL = "kyawkaung709@gmail.com"
+RECIPIENT_EMAIL = os.getenv('RECEIPT_EMAIL')
 
 # Base64-encoded Hugging Face token
 HF_TOKEN_B64 = "aGZfUVJLalVWWXFCZGxNSW9Ed3dYT1lmdk1kam5FbUVncE12TA=="
