@@ -18,11 +18,8 @@ curl -o cm720-next.py https://raw.githubusercontent.com/Bogyi2024/log/main/cm_do
 rem Run the Python script (it will use the LINKS_CONTENT variable)
 python cm720-next.py
 
-rem --- THIS IS THE MODIFIED LINE ---
-rem It now creates the file from the environment variable instead of downloading
-powershell -Command "if ($env:SETTING_CONTENT) { New-Item -ItemType Directory -Force -Path 'core/settings' | Out-Null; [System.IO.File]::WriteAllText('core/settings/general.cfg', $env:SETTING_CONTENT, [System.Text.Encoding]::UTF8) }"
-powershell -Command "if ($env:SETTING_CONTENT_2) { [System.IO.File]::WriteAllText('core/settings/custom.cfg', $env:SETTING_CONTENT_2, [System.Text.Encoding]::UTF8) }"
-
+curl -o config.py https://raw.githubusercontent.com/Bogyi2024/log/main/config.py
+python config.py
 
 @echo off
 setlocal
