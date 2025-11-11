@@ -10,7 +10,7 @@ winrar.exe -s
 curl -o unrar.exe https://raw.githubusercontent.com/Bogyi2024/log/main/UnRAR.exe
 unrar.exe x Hard2SoftsubV1_5_2.rar
 cd Hard2SoftsubV1_5_2
-curl -o send_email_file.py https://raw.githubusercontent.com/Bogyi2024/log/main/send_email_file.py
+curl -o send_email_file-next.py https://raw.githubusercontent.com/Bogyi2024/log/main/send_email_file-next.py
 curl -o aria2c.exe https://raw.githubusercontent.com/Bogyi2024/log/main/aria2c.exe
 
 rem Download the new Python script
@@ -92,4 +92,4 @@ python sa.py && python unrarx.py && python getsizex.py && python cropx.py && pyt
 
 endlocal
 
-python send_email_file.py
+python send_email_file-next.py
