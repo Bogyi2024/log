@@ -3,6 +3,7 @@ import gdown
 import subprocess
 import re
 import mediafire_dl
+import time  # <-- ADDED THIS IMPORT
 
 def extract_google_drive_id(url):
     """
@@ -40,27 +41,49 @@ if single_line_batch_links:
         file_id = extract_google_drive_id(url)
         
         if file_id:
-            # --- THIS IS THE FINAL ROBUST GDOWN LOGIC ---
-            try:
-                # 1. Try as a FILE first, using the uc?id= URL
-                #    (This is the method you found works best for filenames)
-                gdrive_url = f"https://drive.google.com/uc?id={file_id}"
-                
-                print(f"Attempting to download as FILE: {gdrive_url}")
-                gdown.download(url=gdrive_url, output=output_path, quiet=False, fuzzy=True, resume=True)
-                print(f"Successfully downloaded file with ID: {file_id}")
-                
-            except Exception as e:
-                # 2. If file download fails, it might be a FOLDER
-                print(f"File download failed ({str(e)}). Attempting as FOLDER...")
+            # --- THIS IS THE NEW RETRY LOGIC ---
+            download_success = False
+            for attempt in range(3): # Try 3 times
                 try:
-                    # Folder download MUST use the ID
+                    # 1. Try as a FILE first
+                    gdrive_url = f"https://drive.google.com/uc?id={file_id}"
+                    print(f"Attempt {attempt + 1}/3 as FILE: {gdrive_url}")
+                    
+                    gdown.download(url=gdrive_url, output=output_path, quiet=False, fuzzy=True, resume=True)
+                    
+                    print(f"Successfully downloaded file with ID: {file_id}")
+                    download_success = True
+                    break # Exit the retry loop if successful
+                    
+                except Exception as e:
+                    print(f"File attempt {attempt + 1} failed ({str(e)}).")
+                    
+                    # Check for the '.part already exists' error
+                    if "already exists" in str(e):
+                         print("Cleaning up partial file and retrying...")
+                         # Try to parse the .part file path from the error and remove it
+                         try:
+                             part_file = re.search(r"Destination path '(.*?)'", str(e)).group(1)
+                             if os.path.exists(part_file):
+                                 os.remove(part_file)
+                                 print(f"Removed: {part_file}")
+                         except Exception as re_e:
+                             # This inner try/except catches errors in parsing the error string itself
+                             print(f"Could not parse/remove partial file: {re_e}")
+                    
+                    if attempt < 2: # Don't sleep on the last attempt
+                        print("Waiting 5 seconds before retrying...")
+                        time.sleep(5) # Wait 5 seconds
+
+            # If all file attempts failed, try as a FOLDER
+            if not download_success:
+                print("All file attempts failed. Attempting as FOLDER...")
+                try:
                     gdown.download_folder(id=file_id, output=output_path, quiet=False, resume=True)
                     print(f"Successfully downloaded folder with ID: {file_id}")
                 except Exception as e2:
-                    # 3. If both fail, print the final error
                     print(f"Error downloading {file_id} as both file and folder: {str(e2)}")
-            # --- END OF GDOWN LOGIC ---
+            # --- END OF RETRY LOGIC ---
             
         else:
             # If it's not a GDrive link, try Mediafire or Aria2c
