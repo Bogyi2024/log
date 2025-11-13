@@ -50,7 +50,7 @@ if single_line_batch_links:
                 # 2. Run the command-line gdown (which you proved works)
                 # We add --fuzzy and --resume for reliability
                 subprocess.run(
-                    ['gdown', file_id, '--fuzzy', '--resume'], 
+                    ['gdown', file_id], 
                     check=True
                 )
                 
