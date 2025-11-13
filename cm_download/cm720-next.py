@@ -4,15 +4,19 @@ import subprocess
 import re
 import mediafire_dl
 
-# Note: 'requests' is no longer needed for getting the links list
-
 def extract_google_drive_id(url):
-    drive_id_pattern = re.compile(r'(?:drive.google.com/.*?id=|drive.google.com/file/d/|drive.google.com/open\?id=|drive.google.com/uc\?id=)([a-zA-Z0-9_-]{33,})')
+    """
+    Extracts the Google Drive file/folder ID from various URL formats.
+    """
+    # This pattern matches /file/d/ID, /uc?id=ID, /open?id=ID, and /drive/folders/ID
+    # It captures the ID (any character until the next '/', '&', or '?')
+    drive_id_pattern = re.compile(r'drive.google.com/.*?(?:file/d/|drive/folders/|open\?id=|uc\?id=)([^/&?]+)')
     match = drive_id_pattern.search(url)
     if match:
         return match.group(1)
     else:
-        print(f"Invalid Google Drive URL: {url}")
+        # We no longer print an error here, because the main loop will
+        # try other download methods if no ID is found.
         return None
 
 # --- THIS IS THE MODIFIED SECTION ---
@@ -35,21 +39,22 @@ if single_line_batch_links:
     os.makedirs(output_path, exist_ok=True)
 
     for url in single_line_batch_links:
-        if not url.strip(): # Skip empty lines
+        url = url.strip() # Clean up whitespace
+        if not url: # Skip empty lines
             continue
             
         file_id = extract_google_drive_id(url)
         if file_id:
             try:
-                # Construct Google Drive file URL
-                gdrive_url = f"https://drive.google.com/uc?id={file_id}"
+                # *** THIS IS THE FIX FROM LAST TIME ***
+                # We use the extracted file_id directly
                 output_file = os.path.join(output_path, f"{file_id}.file")
-                # Download the file with gdown to the source folder
-                gdown.download(gdrive_url, output=output_file, quiet=False)
-                print(f"Downloaded: {gdrive_url}")
+                gdown.download(id=file_id, output=output_file, quiet=False)
+                print(f"Downloaded Google Drive file with ID: {file_id}")
             except Exception as e:
-                print(f"Error downloading from Google Drive: {str(e)}")
+                print(f"Error downloading from Google Drive (ID: {file_id}): {str(e)}")
         else:
+            # If it's not a GDrive link, try Mediafire or Aria2c
             if url.startswith("https://download") or "mediafire.com" in url:
                 try:
                     os.chdir(output_path)
@@ -66,12 +71,14 @@ if single_line_batch_links:
                     print(f"Error downloading from Mediafire: {str(e)}")
                     os.chdir("../") # Ensure we go back up even on error
             else:
-                filename = url.split('/')[-1]
+                # Fallback to aria2c for other direct links
+                filename = url.split('/')[-1].split('?')[0] # Get filename before query params
+                if not filename:
+                    filename = "unknown_download"
+                    
                 filepath = os.path.join(output_path, filename)
                 try:
-                    # Ensure aria2c is available (downloaded in .bat)
-                    # We call './aria2c' because it's in the current folder
-                    subprocess.run(['./aria2c', '-x', '16', '-d', output_path, url], check=True)
+                    subprocess.run(['./aria2c', '-x', '16', '-d', output_path, '-o', filename, url], check=True)
                     print(f"Downloaded: {filename}")
                 except Exception as e:
                     print(f"Error downloading {filename}: {str(e)}")
