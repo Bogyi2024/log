@@ -17,7 +17,7 @@ def extract_google_drive_id(url):
         return None
 
 # Get the raw list of links from the environment variable
-links_content = "os.getenv('LINKS_CONTENT')"
+links_content = os.getenv('LINKS_CONTENT')
 
 if links_content:
     single_line_batch_links = links_content.splitlines()
