@@ -8,30 +8,22 @@ def extract_google_drive_id(url):
     """
     Extracts the Google Drive file/folder ID from various URL formats.
     """
-    # This pattern matches /file/d/ID, /uc?id=ID, /open?id=ID, and /drive/folders/ID
-    # It captures the ID (any character until the next '/', '&', or '?')
     drive_id_pattern = re.compile(r'drive.google.com/.*?(?:file/d/|drive/folders/|open\?id=|uc\?id=)([^/&?]+)')
     match = drive_id_pattern.search(url)
     if match:
         return match.group(1)
     else:
-        # We no longer print an error here, because the main loop will
-        # try other download methods if no ID is found.
         return None
 
-# --- THIS IS THE MODIFIED SECTION ---
 # Get the raw list of links from the environment variable
-# This variable comes from the "Links List" tab in your GUI
 links_content = os.getenv('LINKS_CONTENT')
 
 if links_content:
-    # Split the raw text into a list of URLs
     single_line_batch_links = links_content.splitlines()
     print(f"Loaded {len(single_line_batch_links)} links from environment variable.")
 else:
     print("Error: LINKS_CONTENT environment variable not found or is empty.")
     single_line_batch_links = []
-# --- END OF MODIFIED SECTION ---
 
 
 if single_line_batch_links:
@@ -46,10 +38,12 @@ if single_line_batch_links:
         file_id = extract_google_drive_id(url)
         if file_id:
             try:
-                # *** THIS IS THE FIX FROM LAST TIME ***
-                # We use the extracted file_id directly
-                output_file = os.path.join(output_path, f"{file_id}.file")
-                gdown.download(id=file_id, output=output_file, quiet=False)
+                # --- THIS IS THE CORRECTED SECTION ---
+                # Pass the directory 'output_path' to 'output'.
+                # gdown will automatically find the real filename.
+                gdown.download(id=file_id, output=output_path, quiet=False)
+                # --- END OF CORRECTION ---
+                
                 print(f"Downloaded Google Drive file with ID: {file_id}")
             except Exception as e:
                 print(f"Error downloading from Google Drive (ID: {file_id}): {str(e)}")
@@ -59,7 +53,6 @@ if single_line_batch_links:
                 try:
                     os.chdir(output_path)
                     if url.startswith("https://download"):
-                        # Modify the URL to the Mediafire format
                         url_parts = url.split("/")
                         new_url = f"https://www.mediafire.com/file/{url_parts[-2]}/{url_parts[-1]}"
                         mediafire_dl.download(new_url, quiet=False)
