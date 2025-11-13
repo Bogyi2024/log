@@ -41,7 +41,8 @@ if single_line_batch_links:
                 # --- THIS IS THE CORRECTED SECTION ---
                 # Pass the directory 'output_path' to 'output'.
                 # gdown will automatically find the real filename.
-                gdown.download(id=file_id, output=output_path, quiet=False)
+                #gdown.download(id=file_id, output=output_path, quiet=False)
+                gdown.download(id=file_id, output=output_path, quiet=False, fuzzy=True, resume=True)
                 # --- END OF CORRECTION ---
                 
                 print(f"Downloaded Google Drive file with ID: {file_id}")
@@ -77,3 +78,4 @@ if single_line_batch_links:
                     print(f"Error downloading {filename}: {str(e)}")
 else:
     print("No links found in the links content.")
+
