@@ -18,57 +18,32 @@ def extract_google_drive_id(url):
         return None
 
 def download_file_from_katfile(url, output_path, apiKey="9368456hlxk1h9wdnydbob"):
-    """
-    Fetches a direct link from Katfile API (works for .com and .cloud)
-    and downloads it using aria2c.
-    """
-    try:
-        parts = url.split('/')
-        domain = parts[2]  # Dynamically gets katfile.com or katfile.cloud
-        filecode = parts[3]
-        cloneurl = f"https://{domain}/api/file/clone?key={apiKey}&file_code={filecode}"
-        
-        print(f"Attempting Katfile clone: {filecode} from {domain}")
-        response = requests.get(cloneurl)
-        response.raise_for_status() # Raise error for bad responses
+    parts = url.split('/')
+    domain = parts[2]
+    filecode = parts[3]
+    cloneurl = f"https://{domain}/api/file/clone?key={apiKey}&file_code={filecode}"
+    response = requests.get(cloneurl)
+    if response.status_code == 200:
         json_data = response.json()
-
-        if json_data.get('status') == 'error':
-            print(f"Katfile API Error (Clone): {json_data.get('msg')}")
-            return
-        
         download_url = json_data.get('result', {}).get('url')
-        if not download_url:
-            print(f"Katfile Error: Could not get clone URL. Response: {json_data}")
-            return
-
         parts_final = download_url.split('/')
         filecodex = parts_final[3]
         final_url = f"https://{domain}/api/file/direct_link?key={apiKey}&file_code={filecodex}"
-        
-        print(f"Attempting Katfile direct link: {filecodex}")
         response = requests.get(final_url)
-        response.raise_for_status()
-        json_data = response.json()
+        if response.status_code == 200:
+            json_data = response.json()
+            download_url = json_data.get('result', {}).get('url')
+            try:
+                # Download the file using aria2c
+                subprocess.run(['aria2c', '-x', '16', '-d', output_path, download_url], check=True)
+                print(f"Downloaded: {download_url}")
+            except Exception as e:
+                print(f"Error downloading from Katfile: {str(e)}")
+        else:
+            print("Error while fetching Katfile API")
+    else:
+        print("Error while fetching Katfile API")
 
-        if json_data.get('status') == 'error':
-            print(f"Katfile API Error (Direct Link): {json_data.get('msg')}")
-            return
-
-        download_url = json_data.get('result', {}).get('url')
-        if not download_url:
-            print(f"Katfile Error: Could not get direct link. Response: {json_data}")
-            return
-        
-        print(f"Downloading from Katfile (Aria2): {download_url}")
-        # Use ./aria2c and add -c for resume
-        subprocess.run(['./aria2c', '-c', '-x', '16', '-d', output_path, download_url], check=True)
-        print(f"Downloaded: {download_url}")
-        
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching Katfile API: {str(e)}")
-    except Exception as e:
-        print(f"Error downloading from Katfile: {str(e)}")
 
 # --- Main Execution ---
 
