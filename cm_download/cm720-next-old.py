@@ -70,7 +70,15 @@ if single_line_batch_links:
                 except Exception as e2:
                     print(f"Error downloading {file_id} as both file and folder: {str(e2)}")
             # --- END OF NEW LOGIC ---
-            
+
+        else if:
+            if "workers" in url:
+               try:
+                os.chdir(output_path)
+                curl -O -J url
+        
+
+        
         else:
             # If it's not a GDrive link, try Mediafire or Aria2c
             if url.startswith("https://download") or "mediafire.com" in url:
@@ -103,3 +111,4 @@ else:
     print("No links found in the links content.")
 
 print("Download script finished.")
+
