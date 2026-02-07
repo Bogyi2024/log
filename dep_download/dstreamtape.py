@@ -5,15 +5,18 @@ import sys
 from tqdm import tqdm
 from huggingface_hub import HfApi
 
-# --- CONFIGURATION ---
-LOGIN = os.environ.get("STREAMTAPE_LOGIN")
-API_KEY = os.environ.get("STREAMTAPE_KEY")
+# --- CONFIGURATION (Synced with the latest GitHub Workflow) ---
+# We use .get() to avoid crashes if a variable is missing
+LOGIN = os.environ.get("ST_LOGIN")
+API_KEY = os.environ.get("ST_KEY")
 HF_TOKEN = os.environ.get("HF_TOKEN")
-HF_REPO_ID = os.environ.get("HF_REPO_ID") # e.g., "username/space-name"
-LINKS = os.environ.get("STREAMTAPE_LINKS", "").splitlines()
+HF_REPO_ID = os.environ.get("HF_REPO_ID")
+HF_REPO_TYPE = os.environ.get("HF_REPO_TYPE", "space")  # New: reads from UI dropdown
+LINKS_RAW = os.environ.get("ST_LINKS", "")             # New: matches workflow 'ST_LINKS'
+LINKS = [l.strip() for l in LINKS_RAW.splitlines() if l.strip()]
 
 if not LOGIN or not API_KEY:
-    print("❌ Error: STREAMTAPE_LOGIN and STREAMTAPE_KEY are required.")
+    print("❌ Error: ST_LOGIN and ST_KEY are required.")
     sys.exit(1)
 
 def download_and_upload(file_id):
@@ -77,16 +80,17 @@ def download_and_upload(file_id):
         if os.path.exists(filename): os.remove(filename)
         return
 
-    # 4. UPLOAD TO HF SPACE
+    # 4. UPLOAD TO HUGGING FACE
     if HF_TOKEN and HF_REPO_ID:
-        print(f"⬆️ Uploading to Hugging Face Space: {HF_REPO_ID}")
+        # Use the Repo Type (space, dataset, or model) from the UI
+        print(f"⬆️ Uploading to Hugging Face {HF_REPO_TYPE}: {HF_REPO_ID}")
         api = HfApi(token=HF_TOKEN)
         try:
             api.upload_file(
                 path_or_fileobj=filename,
                 path_in_repo=filename,
                 repo_id=HF_REPO_ID,
-                repo_type="space" # Or "dataset" / "model"
+                repo_type=HF_REPO_TYPE
             )
             print(f"✅ Upload Finished!")
         except Exception as e:
@@ -100,7 +104,6 @@ def download_and_upload(file_id):
         print("🧹 Cleaned up local file.")
 
 def extract_file_id(url):
-    # Extracts ID from https://streamtape.com/v/rkPZ9gloprUxxr/video.mp4
     if "/v/" in url:
         return url.split("/v/")[1].split("/")[0]
     elif "/e/" in url:
@@ -110,7 +113,5 @@ def extract_file_id(url):
 # --- MAIN LOOP ---
 print(f"📋 Found {len(LINKS)} links to process.")
 for link in LINKS:
-    link = link.strip()
-    if not link: continue
     file_id = extract_file_id(link)
     download_and_upload(file_id)
