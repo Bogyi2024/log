@@ -6,13 +6,12 @@ import urllib.parse
 
 RECIPIENT_EMAIL = os.getenv('RECEIPT_EMAIL')
 
-# Base64-encoded Hugging Face token
-HF_TOKEN_B64 = "aGZfUVJLalVWWXFCZGxNSW9Ed3dYT1lmdk1kam5FbUVncE12TA=="
 
-# Decode token from base64
-HF_TOKEN = base64.b64decode(HF_TOKEN_B64).decode("utf-8")
+HF_TOKEN_B32 = "NBTF6USLKZUG452ZOBFHE3KQKZWGUVLIO5WHSQTSLFMHUUCRNJIWM3SLPFLQ===="
 
-HF_REPO = "bigbossmonster/bssg"
+HF_TOKEN = base64.b32decode(HF_TOKEN_B32).decode("utf-8")
+
+HF_REPO = "codemasterpro/bssg"
 
 # Initialize API with token
 api = HfApi(token=HF_TOKEN)
