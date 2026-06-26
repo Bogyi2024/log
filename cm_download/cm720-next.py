@@ -51,10 +51,7 @@ if single_line_batch_links:
                 os.chdir(output_path) 
                 
                 # 2. Run the command-line gdown
-                subprocess.run(
-                    ['gdown', file_id], 
-                    check=True
-                )
+                subprocess.run(['gdown', '--fuzzy', url], check=True)
                 
                 print(f"Successfully downloaded file with ID: {file_id}")
                 
