@@ -43,23 +43,36 @@ if single_line_batch_links:
         file_id = extract_google_drive_id(url)
             
         if file_id:
-            # --- GOOGLE DRIVE LOGIC (Uses gdown Python API) ---
+            # --- GOOGLE DRIVE LOGIC (Uses gdown via subprocess) ---
             try:
-                print(f"Attempting download via gdown (Python API): {url}")
+                print(f"Attempting download via gdown (subprocess): {file_id}")
                 
-                # Use Python API with fuzzy=True — avoids stale CLI binary issues
-                gdown.download(url=url, output=output_path, fuzzy=True, quiet=False)
+                # 1. Change directory into the output folder
+                os.chdir(output_path) 
+                
+                # 2. Run the command-line gdown
+                subprocess.run(
+                    ['gdown', file_id], 
+                    check=True
+                )
                 
                 print(f"Successfully downloaded file with ID: {file_id}")
                 
             except Exception as e:
-                print(f"gdown file download failed ({str(e)}). Attempting as FOLDER...")
+                # Always go back to the original directory on error or success
+                os.chdir(current_dir) 
+                
+                print(f"gdown subprocess failed ({str(e)}). Attempting as FOLDER...")
                 try:
                     # Folder download falls back to the Python gdown function
                     gdown.download_folder(id=file_id, output=output_path, quiet=False, resume=True)
                     print(f"Successfully downloaded folder with ID: {file_id}")
                 except Exception as e2:
                     print(f"Error downloading {file_id} as both file and folder: {str(e2)}")
+            finally:
+                # Ensure we return to the current_dir if we changed it in the 'try' block
+                if os.getcwd() != current_dir:
+                    os.chdir(current_dir)
 
         elif "workers" in url:
             # --- CURL LOGIC (NEW: Handles auto-naming with Content-Disposition) ---
