@@ -140,10 +140,27 @@ if single_line_batch_links:
                 # Note: We must specify the full path for the output file when not changing directory
                 full_output_file = os.path.join(output_path, filename)
                 
+             #   subprocess.run(
+             #      ['./aria2c', '-c', '-x', '16', '-o', full_output_file, url], 
+             #        check=True
+             #    )
                 subprocess.run(
-                    ['./aria2c', '-c', '-x', '16', '-o', full_output_file, url], 
+                    [
+                        './aria2c',
+                        '-c',
+                        '-d', output_path,
+                        '-o', filename,
+                        '-x', '4',
+                        '-s', '2',
+                        '--max-connection-per-server=2',
+                        '--retry-wait=15',
+                        '--max-tries=5',
+                        '--timeout=60',
+                        '--connect-timeout=30',
+                        url
+                    ],
                     check=True
-                )
+                )                
                 print(f"Downloaded: {full_output_file}")
             except Exception as e:
                 print(f"Error downloading {url} via aria2c: {str(e)}")
